@@ -2,6 +2,7 @@ package us.rafe.browscap;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -11,12 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Ordering;
 
 public class Browscap {
 
     static Logger logger = LoggerFactory.getLogger(Browscap.class);
 
     private Map<String, BrowserCapabilities> browscap;
+    private List<String> browscapsByLength;
 
     private static Browscap instance;
 
@@ -35,7 +39,7 @@ public class Browscap {
         HierarchicalINIConfiguration browscapIni = loadIniFile();
 
         if (null != browscapIni) {
-            browscap = loadBrowscap(browscapIni);
+            loadBrowscap(browscapIni);
         }
 
         logger.info("browsscap.ini loaded and processed " + browscap.size() + " entries in " + timer.elapsedMillis()
@@ -60,9 +64,10 @@ public class Browscap {
         }
     }
 
-    private Map<String, BrowserCapabilities> loadBrowscap(HierarchicalINIConfiguration browscapIni) {
+    private void loadBrowscap(HierarchicalINIConfiguration browscapIni) {
         // LinkedHashMap because the order of the browscap file is meaningful
-        Map<String, BrowserCapabilities> browscap = new LinkedHashMap<String, BrowserCapabilities>();
+        this.browscap = new LinkedHashMap<String, BrowserCapabilities>();
+
         Map<String, Integer> thumbprintCounts = new HashMap<String, Integer>();
 
         for (Object sectionNameObj : browscapIni.getSections()) {
@@ -105,11 +110,12 @@ public class Browscap {
                 } else {
                     bc.setThumbprint(thumbprint);
                 }
-
             }
+
         }
 
-        return browscap;
+        this.browscapsByLength = ImmutableList.copyOf(Ordering.from(new DescendingStringLengthComparator()).sortedCopy(
+                browscap.keySet()));
     }
 
     private HierarchicalINIConfiguration loadIniFile() {
@@ -133,15 +139,14 @@ public class Browscap {
 
         // If a direct lookup didn't work, we're going to have to use a
         // regex.
-        for (BrowserCapabilities bc : browscap.values()) {
-            if (bc.getBrowscapIdentifier().equals("*")) {
+        for (String browscapIdentifier : browscapsByLength) {
+            if (browscapIdentifier.equals("*")) {
                 continue;
             }
 
-            if (bc.matches(ua)) {
-                if (bc.getBrowscapIdentifier().length() > matched.getBrowscapIdentifier().length()) {
-                    matched = bc;
-                }
+            if (browscap.get(browscapIdentifier).matches(ua)) {
+                matched = browscap.get(browscapIdentifier);
+                break;
             }
         }
 
