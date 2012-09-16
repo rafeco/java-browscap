@@ -1,6 +1,23 @@
 *.class
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
+
+# Eclipse Settings
+.classpath
+.project
+.settings
+
+# Built Artifacts
+target/*
+cache/*
+bin/*
+build/*
+ivy-cache/*
+distrib/*
+
+# Ivy Settings
+ivysettings.properties
+ivysettings.xml
