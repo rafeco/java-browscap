@@ -1,41 +1,63 @@
-<project name="browscap" default="resolve" xmlns:ivy="antlib:org.apache.ivy.ant">
-	<property name="ivy.install.version" value="2.0.0-beta1" />
-	<property name="ivy.jar.dir" value="${basedir}/ivy" />
+<project name="browscap" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property name="ivy.install.version" value="2.3.0-rc1" />
+	<property name="ivy.home" value="${user.home}/.ivy2" />
+
+	<property name="ivy.jar.dir" value="${ivy.home}/lib" />
 	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
 
-	<property name="build.dir" value="build" />
-	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="dist.dir" value="${basedir}/target" />
 
-	<target name="download-ivy" unless="skip.download">
+	<property name="ivy.settings.dir" value="${basedir}" />
+	<property file="${ivy.settings.dir}/ivysettings.properties" />
+
+	<path id="lib.path.id">
+		<fileset dir="${lib.dir}" />
+	</path>
+
+	<ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+
+	<target name="download-ivy" unless="offline">
 		<mkdir dir="${ivy.jar.dir}" />
 		<!-- download Ivy from web site so that it can be used even without any special installation -->
-		<echo message="installing ivy..." />
 		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
 
-	<target name="install-ivy" depends="download-ivy" description="--> install ivy">
-		<!-- try to load ivy here from local ivy dir, in case the user has not already dropped
-    	      it into ant's lib dir (note that the latter copy will always take precedence).
-    	      We will not fail as long as local lib dir exists (it may be empty) and
-    	      ivy is in at least one of ant's lib dir or the local lib dir. -->
-		<path id="ivy.lib.path">
-			<fileset dir="${ivy.jar.dir}" includes="*.jar" />
-		</path>
-		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
-	</target>
-
-	<target name="resolve" depends="install-ivy" description="retrieve dependencies with ivy">
+	<target name="resolve" description="retrieve dependencies with ivy">
 		<ivy:retrieve />
 	</target>
 
 	<target name="clean" description="clean the project">
 		<delete includeemptydirs="true" quiet="true">
-			<fileset dir="${src.dir}" />
 			<fileset dir="${build.dir}" />
 		</delete>
 	</target>
 
-	<target name="clean-cache" depends="install-ivy" description="--> clean the ivy cache">
+	<target name="compile" depends="resolve">
+		<ivy:cachepath pathid="default.classpath" conf="default" />
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" includeantruntime="false" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<jar jarfile="${dist.dir}/${ant.project.name}-${ivy.revision}.jar">
+			<fileset dir="${build.dir}">
+				<include name="**/*.class" />
+				<include name="**/*.ini" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="publish" depends="jar">
+		<delete file="${dist.dir}/ivy.xml" />
+		<ivy:deliver deliverpattern="${dist.dir}/[artifact]-[revision].[ext]" pubrevision="${ivy.revision}" status="release" />
+		<ivy:publish resolver="filesystem-repo" artifactspattern="${dist.dir}/[artifact]-[revision].[ext]" status="release" pubrevision="${ivy.revision}" />
+	</target>
+
+	<target name="clean-cache" description="--> clean the ivy cache">
 		<ivy:cleancache />
 	</target>
 </project>
