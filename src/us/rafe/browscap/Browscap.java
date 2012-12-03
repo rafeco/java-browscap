@@ -89,6 +89,8 @@ public class Browscap {
 
             String isMobileDeviceValue = digForProperty(sectionName, "isMobileDevice", browscapIni);
             browser.setIsMobileDevice(null != isMobileDeviceValue ? Boolean.valueOf(isMobileDeviceValue) : null);
+            String isTabletValue = digForProperty(sectionName, "isTablet", browscapIni);
+            browser.setIsTablet(null != isTabletValue ? Boolean.valueOf(isTabletValue) : null);
 
             browscap.put(sectionName, browser);
 
