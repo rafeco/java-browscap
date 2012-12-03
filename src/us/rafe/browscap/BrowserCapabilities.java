@@ -34,6 +34,7 @@ public class BrowserCapabilities {
     private String deviceName;
     private String deviceMaker;
     private Boolean isMobileDevice;
+    private Boolean isTablet;
 
     private String extractLeftMatcher(String browscapIdentifier) {
         Pattern matchLeft = Pattern.compile("^[^?*]*");
@@ -66,6 +67,10 @@ public class BrowserCapabilities {
 
     public Boolean getIsMobileDevice() {
         return isMobileDevice;
+    }
+    
+    public Boolean getIsTablet() {
+        return isTablet;
     }
 
     public Set<String> getLongestNonWildcards() {
@@ -179,6 +184,10 @@ public class BrowserCapabilities {
 
     public void setIsMobileDevice(Boolean isMobileDevice) {
         this.isMobileDevice = isMobileDevice;
+    }
+    
+    public void setIsTablet(Boolean isTablet) {
+        this.isTablet = isTablet;
     }
 
     public void setMajorVer(String majorVer) {

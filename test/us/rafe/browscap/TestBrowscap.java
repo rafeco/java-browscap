@@ -57,6 +57,7 @@ public class TestBrowscap extends TestCase {
         assertEquals("9.0", bc.getVersion());
         assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
         assertEquals("Win7", bc.getPlatform());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
     }
 
     public void testIPad3() {
@@ -72,6 +73,7 @@ public class TestBrowscap extends TestCase {
         assertEquals("iOS", bc.getPlatform());
         assertEquals("iPad", bc.getDeviceName());
         assertEquals("Apple", bc.getDeviceMaker());
+        assertEquals(Boolean.TRUE, bc.getIsTablet());
     }
 
     public void testIPhone() {
