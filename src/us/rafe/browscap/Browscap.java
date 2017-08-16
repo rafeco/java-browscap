@@ -33,16 +33,15 @@ public class Browscap {
     }
 
     private Browscap() {
-        Stopwatch timer = new Stopwatch();
+        Stopwatch timer = Stopwatch.createStarted;
 
-        timer.start();
         HierarchicalINIConfiguration browscapIni = loadIniFile();
 
         if (null != browscapIni) {
             loadBrowscap(browscapIni);
         }
 
-        logger.info("browsscap.ini loaded and processed " + browscap.size() + " entries in " + timer.elapsedMillis()
+        logger.info("browsscap.ini loaded and processed " + browscap.size() + " entries in " + timer.elapsed(TimeUnit.MILLISECONDS)
                 + "ms");
     }
 
@@ -134,7 +133,7 @@ public class Browscap {
     }
 
     public BrowserCapabilities lookup(String ua) {
-        Stopwatch timer = new Stopwatch().start();
+        Stopwatch timer = Stopwatch.createStarted();
 
         // Get the default browser.
         BrowserCapabilities matched = browscap.get("*");
@@ -152,7 +151,7 @@ public class Browscap {
             }
         }
 
-        logger.debug("browscap lookup took " + timer.elapsedMillis() + "ms");
+        logger.debug("browscap lookup took " + timer.elapsed(TimeUnit.MILLISECONDS) + "ms");
         return matched;
     }
 

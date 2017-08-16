@@ -2,7 +2,7 @@
 	<info organisation="us.rafe" module="browscap" revision="0.1" status="release" />
 
 	<dependencies>
-		<dependency org="com.google.guava" name="guava" rev="13.0" />
+		<dependency org="com.google.guava" name="guava" rev="17.0" />
 		<dependency org="commons-configuration" name="commons-configuration"
 			rev="1.7" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.6" />
