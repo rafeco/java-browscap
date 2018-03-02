@@ -17,7 +17,12 @@
 		<fileset dir="${lib.dir}" />
 	</path>
 
-	<ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+        <target name="-check-ivy-settings" unless="ivysettings.exists">
+          <available property="ivysettings.exists" file="${ivy.settings.dir}/ivysettings.xml"/>
+	</target>
+        <target name="load-ivy-settings" depends="-check-ivy-settings" if="${ivysettings.exists}">
+	  <ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+	</target>
 
 	<target name="download-ivy" unless="offline">
 		<mkdir dir="${ivy.jar.dir}" />
@@ -25,7 +30,7 @@
 		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
 
-	<target name="resolve" description="retrieve dependencies with ivy">
+	<target name="resolve" description="retrieve dependencies with ivy" depends="load-ivy-settings">
 		<ivy:retrieve />
 	</target>
 
