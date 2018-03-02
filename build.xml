@@ -8,6 +8,7 @@
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="src.tests" value="${basedir}/test" />
 	<property name="dist.dir" value="${basedir}/target" />
 
 	<property name="ivy.settings.dir" value="${basedir}" />
@@ -44,6 +45,24 @@
 		<ivy:cachepath pathid="default.classpath" conf="default" />
 		<mkdir dir="${build.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" includeantruntime="false" />
+	</target>
+
+	<target name="test" depends="compile">
+	  <junit printsummary="yes">
+	    <classpath>
+	      <pathelement location="${build.tests}"/>
+	      <pathelement path="${java.class.path}"/>
+	      <fileset dir="${lib.dir}">
+		<include name="**/*.jar"/>
+	      </fileset>
+	    </classpath>
+
+	    <batchtest fork="yes">
+	      <fileset dir="${src.tests}">
+		<include name="**/*Test*.java"/>
+	      </fileset>
+	    </batchtest>
+	  </junit>
 	</target>
 
 	<target name="jar" depends="compile">
