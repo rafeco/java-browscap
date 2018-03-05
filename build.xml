@@ -8,6 +8,7 @@
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="src.tests" value="${basedir}/test" />
 	<property name="dist.dir" value="${basedir}/target" />
 
 	<property name="ivy.settings.dir" value="${basedir}" />
@@ -17,7 +18,12 @@
 		<fileset dir="${lib.dir}" />
 	</path>
 
-	<ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+        <target name="-check-ivy-settings" unless="ivysettings.exists">
+          <available property="ivysettings.exists" file="${ivy.settings.dir}/ivysettings.xml"/>
+	</target>
+        <target name="load-ivy-settings" depends="-check-ivy-settings" if="${ivysettings.exists}">
+	  <ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+	</target>
 
 	<target name="download-ivy" unless="offline">
 		<mkdir dir="${ivy.jar.dir}" />
@@ -25,7 +31,7 @@
 		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
 
-	<target name="resolve" description="retrieve dependencies with ivy">
+	<target name="resolve" description="retrieve dependencies with ivy" depends="load-ivy-settings">
 		<ivy:retrieve />
 	</target>
 
@@ -39,6 +45,24 @@
 		<ivy:cachepath pathid="default.classpath" conf="default" />
 		<mkdir dir="${build.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" includeantruntime="false" />
+	</target>
+
+	<target name="test" depends="compile">
+	  <junit printsummary="yes">
+	    <classpath>
+	      <pathelement location="${build.tests}"/>
+	      <pathelement path="${java.class.path}"/>
+	      <fileset dir="${lib.dir}">
+		<include name="**/*.jar"/>
+	      </fileset>
+	    </classpath>
+
+	    <batchtest fork="yes">
+	      <fileset dir="${src.tests}">
+		<include name="**/*Test*.java"/>
+	      </fileset>
+	    </batchtest>
+	  </junit>
 	</target>
 
 	<target name="jar" depends="compile">
