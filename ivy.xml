@@ -1,5 +1,5 @@
 <ivy-module version="2.0">
-	<info organisation="us.rafe" module="browscap" revision="0.1" status="release" />
+	<info organisation="us.rafe" module="browscap" revision="0.2" status="release" />
 
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="17.0" />
