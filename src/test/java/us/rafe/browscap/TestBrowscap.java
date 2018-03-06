@@ -5,9 +5,6 @@ import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import us.rafe.browscap.Browscap;
-import us.rafe.browscap.BrowserCapabilities;
-
 public class TestBrowscap extends TestCase {
     static Logger logger = LoggerFactory.getLogger(TestBrowscap.class);
 
@@ -24,18 +21,6 @@ public class TestBrowscap extends TestCase {
         assertEquals("2.2", bc.getPlatformVersion());
         assertEquals("Android", bc.getDeviceName());
         assertEquals("Google", bc.getDeviceMaker());
-    }
-
-    public void testChrome16OSX() {
-        String ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7";
-
-        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
-
-        assertNotNull(bc);
-        assertEquals("Chrome", bc.getBrowser());
-        assertEquals("16.0", bc.getVersion());
-        assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
-        assertEquals("MacOSX", bc.getPlatform());
     }
 
     public void testChrome64OSX() {
