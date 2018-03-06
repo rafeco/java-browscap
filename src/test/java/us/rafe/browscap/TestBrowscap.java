@@ -1,40 +1,17 @@
 package us.rafe.browscap;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestBrowscap extends TestCase {
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+
+public class TestBrowscap {
     static Logger logger = LoggerFactory.getLogger(TestBrowscap.class);
 
-    public void testAndroid() {
-        String ua = "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 
-        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
-
-        assertNotNull(bc);
-        assertEquals("Android", bc.getBrowser());
-        assertEquals("4.0", bc.getVersion());
-        assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
-        assertEquals("Android", bc.getPlatform());
-        assertEquals("2.2", bc.getPlatformVersion());
-        assertEquals("Android", bc.getDeviceName());
-        assertEquals("Google", bc.getDeviceMaker());
-    }
-
-    public void testChrome64OSX() {
-        String ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36";
-
-        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
-
-        assertNotNull(bc);
-        assertEquals("Chrome", bc.getBrowser());
-        assertEquals("64.0", bc.getVersion());
-        assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
-        assertEquals("MacOSX", bc.getPlatform());
-    }
-
+    @Test
     public void testDefault() {
         String ua = "Not a real browser";
 
@@ -45,8 +22,38 @@ public class TestBrowscap extends TestCase {
         assertEquals("0.0", bc.getVersion());
         assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
         assertEquals("unknown", bc.getPlatform());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
     }
 
+    @Test
+    public void testAndroidGalaxy() {
+        String ua = "Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
+
+        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
+
+        assertNotNull(bc);
+        assertEquals("Android", bc.getBrowser());
+        assertEquals("4.0", bc.getVersion());
+        assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
+        assertEquals("Android", bc.getPlatform());
+    }
+
+    @Test
+    public void testAndroidTabletFirefox() {
+        String ua = "Mozilla/5.0 (Android 4.4; Tablet; rv:46.0) Gecko/46.0 Firefox/46.0";
+
+        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
+
+        assertNotNull(bc);
+        assertEquals("Firefox", bc.getBrowser());
+        assertEquals("46.0", bc.getVersion());
+        assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
+        assertEquals("Android", bc.getPlatform());
+        assertEquals(Boolean.TRUE, bc.getIsTablet());
+    }
+
+
+    @Test
     public void testIE9() {
         String ua = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
 
@@ -60,60 +67,73 @@ public class TestBrowscap extends TestCase {
         assertEquals(Boolean.FALSE, bc.getIsTablet());
     }
 
-    public void testIPad3() {
-        String ua = "Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10";
+    @Test
+    public void testIE11() {
+        String ua = "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko";
+
+        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
+
+        assertNotNull(bc);
+        assertEquals("IE", bc.getBrowser());
+        assertEquals("11.0", bc.getVersion());
+        assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
+        assertEquals("Win10", bc.getPlatform());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
+    }
+
+    @Test
+    public void testEdge() {
+        String ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
+
+        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
+
+        assertNotNull(bc);
+        assertEquals("Edge", bc.getBrowser());
+        assertEquals("12.0", bc.getVersion());
+        assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
+        assertEquals("Win10", bc.getPlatform());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
+    }
+
+    @Test
+    public void testIPadiOS9() {
+        String ua = "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B137 Safari/601.1";
 
         BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
 
         assertNotNull(bc);
         assertEquals("Safari", bc.getBrowser());
-        assertEquals("4.0", bc.getVersion());
+        assertEquals("9.0", bc.getVersion());
         assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
-        assertEquals("3.2", bc.getPlatformVersion());
         assertEquals("iOS", bc.getPlatform());
-        assertEquals("iPad", bc.getDeviceName());
-        assertEquals("Apple", bc.getDeviceMaker());
         assertEquals(Boolean.TRUE, bc.getIsTablet());
     }
 
+    @Test
     public void testIPhone() {
-        String ua = "Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3";
+        String ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B137 Safari/601.1";
 
         BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
 
         assertNotNull(bc);
         assertEquals("Safari", bc.getBrowser());
-        assertEquals("3.0", bc.getVersion());
+        assertEquals("9.0", bc.getVersion());
         assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
         assertEquals("iOS", bc.getPlatform());
-        assertEquals("iPhone", bc.getDeviceName());
-        assertEquals("Apple", bc.getDeviceMaker());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
     }
 
-    public void testMaxthon3() {
-        String ua = "Mozilla/5.0 (Windows; U; Windows NT 5.1; ) AppleWebKit/534.12 (KHTML, like Gecko) Maxthon/3.0 Safari/534.12";
+    @Test
+    public void testChrome64OSX() {
+        String ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36";
 
         BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
 
         assertNotNull(bc);
-        assertEquals("Maxthon", bc.getBrowser());
-        assertEquals("3.0", bc.getVersion());
+        assertEquals("Chrome", bc.getBrowser());
+        assertEquals("64.0", bc.getVersion());
         assertEquals(Boolean.FALSE, bc.getIsMobileDevice());
-        assertEquals("WinXP", bc.getPlatform());
-    }
-
-    public void testSamsungS3() {
-        String ua = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-
-        BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
-
-        assertNotNull(bc);
-        assertEquals("Android", bc.getBrowser());
-        assertEquals("4.0", bc.getVersion());
-        assertEquals(Boolean.TRUE, bc.getIsMobileDevice());
-        assertEquals("Android", bc.getPlatform());
-        assertEquals("4.0", bc.getPlatformVersion());
-        assertEquals("Android", bc.getDeviceName());
-        assertEquals("Google", bc.getDeviceMaker());
+        assertEquals("MacOSX", bc.getPlatform());
+        assertEquals(Boolean.FALSE, bc.getIsTablet());
     }
 }

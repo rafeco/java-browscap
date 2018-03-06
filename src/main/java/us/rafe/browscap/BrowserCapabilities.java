@@ -29,10 +29,6 @@ public class BrowserCapabilities {
     private String minorVer;
     private String parent;
     private String platform;
-    private String platformVersion;
-    private String platformDescription;
-    private String deviceName;
-    private String deviceMaker;
     private Boolean isMobileDevice;
     private Boolean isTablet;
 
@@ -55,14 +51,6 @@ public class BrowserCapabilities {
 
     public String getBrowser() {
         return browser;
-    }
-
-    public String getDeviceMaker() {
-        return deviceMaker;
-    }
-
-    public String getDeviceName() {
-        return deviceName;
     }
 
     public Boolean getIsMobileDevice() {
@@ -107,14 +95,6 @@ public class BrowserCapabilities {
 
     public String getPlatform() {
         return platform;
-    }
-
-    public String getPlatformDescription() {
-        return platformDescription;
-    }
-
-    public String getPlatformVersion() {
-        return platformVersion;
     }
 
     public String getThumbprint() {
@@ -174,14 +154,6 @@ public class BrowserCapabilities {
         this.browser = browser;
     }
 
-    public void setDeviceMaker(String deviceMaker) {
-        this.deviceMaker = deviceMaker;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
-
     public void setIsMobileDevice(Boolean isMobileDevice) {
         this.isMobileDevice = isMobileDevice;
     }
@@ -204,14 +176,6 @@ public class BrowserCapabilities {
 
     public void setPlatform(String platform) {
         this.platform = platform;
-    }
-
-    public void setPlatformDescription(String platformDescription) {
-        this.platformDescription = platformDescription;
-    }
-
-    public void setPlatformVersion(String platformVersion) {
-        this.platformVersion = platformVersion;
     }
 
     public void setThumbprint(String thumbprint) {

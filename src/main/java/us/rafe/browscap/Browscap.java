@@ -42,7 +42,7 @@ public class Browscap {
             loadBrowscap(browscapIni);
         }
 
-        logger.info("browsscap.ini loaded and processed " + browscap.size() + " entries in " + timer.elapsed(TimeUnit.MILLISECONDS)
+        logger.info("lite_asp_browscap.ini loaded and processed " + browscap.size() + " entries in " + timer.elapsed(TimeUnit.MILLISECONDS)
                 + "ms");
     }
 
@@ -81,10 +81,6 @@ public class Browscap {
             browser.setMajorVer(digForProperty(sectionName, "MajorVer", browscapIni));
             browser.setMinorVer(digForProperty(sectionName, "MinorVer", browscapIni));
             browser.setPlatform(digForProperty(sectionName, "Platform", browscapIni));
-            browser.setPlatformVersion(digForProperty(sectionName, "Platform_Version", browscapIni));
-            browser.setPlatformDescription(digForProperty(sectionName, "Platform_Description", browscapIni));
-            browser.setDeviceMaker(digForProperty(sectionName, "Device_Maker", browscapIni));
-            browser.setDeviceName(digForProperty(sectionName, "Device_Name", browscapIni));
             browser.setParent(digForProperty(sectionName, "Parent", browscapIni));
 
             String isMobileDeviceValue = digForProperty(sectionName, "isMobileDevice", browscapIni);
@@ -127,7 +123,7 @@ public class Browscap {
             browscapIni = new HierarchicalINIConfiguration(Thread.currentThread().getContextClassLoader()
                     .getResource("lite_asp_browscap.ini"));
         } catch (ConfigurationException e) {
-            throw new RuntimeException("Could not load INI file", e);
+            throw new RuntimeException("Could not load lite_asp_browscap.ini file", e);
         }
 
         return browscapIni;
