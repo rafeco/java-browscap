@@ -130,7 +130,7 @@ public class BrowserCapabilities {
             return null;
         }
 
-        String regex = identifier.replaceAll("[.()]", "\\\\Q$0\\\\E").replaceAll("\\?", ".").replaceAll("\\*", ".*?");
+        String regex = "(?i)" + identifier.replaceAll("[.()]", "\\\\Q$0\\\\E").replaceAll("\\?", ".").replaceAll("\\*", ".*?");
 
         return regex;
     }
