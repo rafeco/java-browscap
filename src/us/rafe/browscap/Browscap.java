@@ -125,7 +125,7 @@ public class Browscap {
 
         try {
             browscapIni = new HierarchicalINIConfiguration(Thread.currentThread().getContextClassLoader()
-                    .getResource("browscap.ini"));
+                    .getResource("lite_asp_browscap.ini"));
         } catch (ConfigurationException e) {
             throw new RuntimeException("Could not load INI file", e);
         }

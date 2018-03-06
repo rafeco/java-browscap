@@ -21,3 +21,5 @@ distrib/*
 # Ivy Settings
 ivysettings.properties
 ivysettings.xml
+*.iml
+sftp-config.json
