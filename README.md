@@ -1,7 +1,9 @@
 java-browscap
 =============
 
-Java library to extract browser info from a user agent string using browscap.ini
+Java library to extract browser info from a user agent string using browscap.ini. 
+
+Uses the "lite" version, `lite_asp_browscap.ini` from [browscap.org](http://browscap.org/). Note that this doesn't include all properties (e.g. `Device_Name`, `Platform_Version`).
 
 ## Usage
 
@@ -14,10 +16,8 @@ BrowserCapabilities bc = Browscap.getInstance().lookup(ua);
 
 System.out.println(bc.getBrowser()); // "Safari"
 System.out.println(bc.getVersion()); // "3.0"
-System.out.println(bc.getIsMobileDevice()); // "true"
 System.out.println(bc.getPlatform()); // "iOS"
-System.out.println(bc.getDeviceName()); // "iPhone"
-System.out.println(bc.getDeviceMaker()); // "Apple"
+System.out.println(bc.getIsMobileDevice()); // "true"
 System.out.println(bc.getIsTablet()); // "false"
 ```
 
@@ -26,5 +26,5 @@ System.out.println(bc.getIsTablet()); // "false"
 Run tests with:
 
 ```
-ant test
+mvn test
 ```
