@@ -5,6 +5,10 @@ Java library to extract browser info from a user agent string using browscap.ini
 
 Uses the "lite" version, `lite_asp_browscap.ini` from [browscap.org](http://browscap.org/). Note that this doesn't include all properties (e.g. `Device_Name`, `Platform_Version`).
 
+## ⚠️ Important Notice
+
+**The dependencies for this project are very old.** Do not use this library in production without first forking it and updating all dependencies to their latest secure versions. This library is provided as-is for historical/reference purposes.
+
 ## Modern Alternatives
 
 If you're starting a new project, consider these more actively maintained alternatives:
